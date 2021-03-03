@@ -1,0 +1,165 @@
+$desktop: 1000px;
+
+$darkTheme: "darkTheme";
+$lightTheme: "lightTheme";
+
+$backgroundColor: "backgroundColor";
+$contentBackground: "contentBackground";
+$contentBorder: "contentBorder";
+$contentColor: "contentColor";
+$boxTitleColor: "boxTitleColor";
+
+$themes: (
+    $lightTheme: (
+        $backgroundColor: #FAFAFA,
+        $contentBackground: #FFFFFF,
+        $contentBorder: #EDF1F6,
+        $contentColor: #7E8286,
+        $boxTitleColor: #303E4E
+    ),
+    $darkTheme: (
+        $backgroundColor: #FAFAFA,
+        $contentBackground: #FFFFFF,
+        $contentBorder: #EDF1F6,
+        $contentColor: #7E8286,
+        $boxTitleColor: #303E4E
+    )
+);
+
+@mixin themeProperty($theme, $property, $color, $additionalPropertiesPositionIsFront, $additionalProperties) {
+    @if $additionalPropertiesPositionIsFront {
+        #{$property}: unquote($additionalProperties + ' ' + map-get($theme, $color));
+    } @else {
+        #{$property}: unquote(map-get($theme, $color) + ' ' + $additionalProperties);
+    }
+}
+
+@mixin theme($property, $color, $additionalPropertiesPositionIsFront: false, $additionalProperties: '') {
+    $light: map-get($themes, $lightTheme);
+    $dark: map-get($themes, $darkTheme);
+
+    @include themeProperty($light, $property, $color, $additionalPropertiesPositionIsFront, $additionalProperties);
+
+    @media (prefers-color-scheme: dark) {
+        @include themeProperty($dark, $property, $color, $additionalPropertiesPositionIsFront, $additionalProperties);
+    }
+}
+
+// TODO: Tooltips: https://www.w3schools.com/css/css_tooltip.asp
+
+* {
+    box-sizing: border-box;
+}
+
+body, dd {
+    margin: 0;
+}
+
+body {
+    @include theme('background-color', $backgroundColor);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    font-size: 14px;
+}
+
+dl, dd {
+    display: block;
+}
+
+input[type=text], input[type=password] {
+    margin: 0;
+    // TODO: colors
+    background-color: #f1f6fb;
+    border: 1px solid #b0c8e0;
+    border-radius: 0;
+    color: #2c3e50;
+    font-weight: 400;
+    outline: none;
+    padding: 4px 8px;
+    line-height: 1.48;
+    width: 100%;
+    font-size: 14px;
+}
+
+input[type=submit] {
+    background-color: #cfd8dc;
+    border-radius: 2px;
+    border-width: 0;
+    color: #212121;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 400;
+    margin: 0;
+    padding: 8px 18px;
+    text-decoration: none;
+    line-height: 1.48;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.pageLogo {
+    h1 {
+        text-align: center;
+    }
+}
+
+.pageContentWrapper {
+    margin: 0 auto;
+    @media (min-width: $desktop) {
+        max-width: 1000px;
+        display: grid;
+        grid-template-areas: 
+            'main right'
+            'footer footer';
+        grid-gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .contentBox {
+        padding: 10px;
+        border: 1px solid;
+        @include theme('background-color', $contentBackground);
+        @include theme('border-color', $contentBorder);
+        @include theme('color', $contentColor);
+
+        h2.boxTitle {
+            @include theme('color', $boxTitleColor);
+            margin: 0;
+            margin-bottom: 10px;
+        }
+        @media (max-width: $desktop - 1) {
+            &:not(:first-child) {
+                margin-top: 20px;
+            }
+        }
+
+        .submitArea {
+            text-align: center;
+        }
+    }
+
+    @media (min-width: $desktop) {
+        .joinGameBox {
+            grid-area: main;
+        }
+        .createGameBox {
+            grid-area: right;
+        }
+        .instructionBox {
+            grid-area: footer;
+        }
+    }
+}
+
+.footerWrapper {
+    ul {
+        margin: 20px 0;
+        padding: 0;
+        text-align: center;
+
+        li {
+            display: inline;
+            padding: 0 5px;
+        }
+    }
+}

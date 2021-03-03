@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
     <head>
+        <title>CAH</title>
         <meta charset="utf-8" />
+        <link rel="stylesheet" href="css/cah.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="format-detection" content="telephone=no">
     </head>
     <body>
-        <h1>It work's!</h1>
-        <script data-main="scripts/out/cah" src="scripts/require.js"></script>
+        <div class="pageWrapper" id="pageWrapper">
+            <div class="pageLogo">
+                <h1>Logo</h1>
+            </div>
+
+            <div class="pageContentWrapper">
+                <div class="joinGameBox contentBox">
+                    <h2 class="boxTitle">Spiel beitreten</h2>
+
+                    <dl>
+                        <dt>Raum-Code</dt>
+                        <dd>
+                            <input type="text" name="">
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>Raum-Passwort <i>(optional)</i></dt>
+                        <dd>
+                            <input type="password" name="">
+                        </dd>
+                    </dl>
+
+                    <div class="submitArea">
+                        <input type="submit" value="Raum betreten">
+                    </div>
+                </div>
+                <div class="createGameBox contentBox">
+                    <h2 class="boxTitle">Spiel erstellen</h2>
+
+                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                </div>
+                <div class="instructionBox contentBox">
+                    <h2 class="boxTitle">Spielregeln</h2>
+
+                    Lorem Ipsum dolor sit atmet
+                </div>
+            </div>
+
+            <div class="footerWrapper">
+                <ul>
+                    <li>
+                        <a href="/privacy.html">Datenschutzerklärung</a>
+                    </li>
+                    <li>
+                        <a href="/imprint.html">Impressum</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <script data-main="scripts/out/cah" src="scripts/require.js" defer="defer"></script>
     </body>
 </html>
