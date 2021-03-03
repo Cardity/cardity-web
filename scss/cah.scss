@@ -66,7 +66,18 @@ dl, dd {
     display: block;
 }
 
-input[type=text], input[type=password] {
+dd {
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            list-style-type: none;
+        }
+    }
+}
+
+input[type=text], input[type=password], input[type=number] {
     margin: 0;
     // TODO: colors
     background-color: #f1f6fb;
@@ -82,6 +93,7 @@ input[type=text], input[type=password] {
 }
 
 input[type=submit] {
+    // TODO: colors
     background-color: #cfd8dc;
     border-radius: 2px;
     border-width: 0;
@@ -97,22 +109,25 @@ input[type=submit] {
     text-transform: uppercase;
 }
 
-.pageLogo {
-    h1 {
-        text-align: center;
-    }
-}
-
-.pageContentWrapper {
+.pageWrapper {
     margin: 0 auto;
     @media (min-width: $desktop) {
         max-width: 1000px;
         display: grid;
-        grid-template-areas: 
+        grid-template-areas:
+            'logo logo'
             'main right'
+            'rules rules'
             'footer footer';
         grid-gap: 20px;
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pageLogo {
+        grid-area: logo;
+        h1 {
+            text-align: center;
+        }
     }
 
     .contentBox {
@@ -146,20 +161,21 @@ input[type=submit] {
             grid-area: right;
         }
         .instructionBox {
-            grid-area: footer;
+            grid-area: rules;
         }
     }
-}
 
-.footerWrapper {
-    ul {
-        margin: 20px 0;
-        padding: 0;
-        text-align: center;
+    .footerWrapper {
+        grid-area: footer;
 
-        li {
-            display: inline;
-            padding: 0 5px;
+        ul {
+            padding: 0;
+            text-align: center;
+    
+            li {
+                display: inline;
+                padding: 0 5px;
+            }
         }
     }
 }
