@@ -3,6 +3,7 @@
         <Header />
         <v-row>
             <JoinGame />
+            <v-spacer/>
             <CreateGame />
         </v-row>
         <GameInstruction />
@@ -45,8 +46,13 @@ export default class Home extends Vue {}
         h2.boxTitle {
             @include theme('color', $boxTitleColor);
             margin: 0;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
+    }
+
+    .spacer {
+        flex-grow: 0 !important;
+        width: 20px;
     }
 }
 </style>

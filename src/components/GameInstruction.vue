@@ -7,3 +7,9 @@
         </v-col>
     </v-row>
 </template>
+
+<style lang="scss" scoped>
+.gameInstruction {
+    margin-top: 20px;
+}
+</style>
