@@ -16,6 +16,7 @@
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="show1 ? 'text' : 'password'"
                 label="Raum-Passwort"
+                :rules="passwordRules"
                 outlined
                 clearable
                 @click:append="show1 = !show1">
@@ -26,6 +27,7 @@
             </v-subheader>
             <v-slider
                 v-model="maxPlayers"
+                :rules="maxPlayersRules"
                 min="3"
                 max="10"
                 thumb-label="always"
@@ -84,11 +86,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import VueRouter from "vue-router";
 
 @Component({})
 export default class CreateGame extends Vue {
-    nickname: string = '';
-    password: string = '';
+    nickname: string = "";
+    password: string = "";
     maxPlayers: number = 0;
     secondsPerRound: number = 0;
     cardDecks: string[] = [];
@@ -101,22 +104,39 @@ export default class CreateGame extends Vue {
         return {
             valid: true,
             show1: false,
-            nickname: '',
+            nickname: "",
             nicknameRules: [
-                (value: string) => !!value || "test",
-                (value: string) => (value && value.length > 10) || 'Name must be less than 10 characters'
+                (value: string) => !!value || "Der Nickname darf nicht leer sein.",
+                (value: string) => (value && value.length >= 3) || "Der Nickname muss mindestens 3 Zeichen lang sein.",
+                (value: string) => (value && value.length <= 16) || "Der Nickname darf maximal 16 Zeichen lang sein."
             ],
-            password: '',
+            password: "",
+            passwordRules: [
+                (value: string) => (!value || value && value.length >= 4) || "Das Passwort muss mindestens 4 Zeichen lang sein.",
+                (value: string) => (!value || value && value.length <= 32) || "Das Passwort darf maximal 32 Zeichen lang sein.",
+            ],
             maxPlayers: 10,
+            maxPlayersRules: [
+                (value: number) => (value >= 3) || "Es werden mindestens 3 Spieler benötigt.",
+                (value: number) => (value <= 10) || "Es können maximal 10 Spieler teilnehmen."
+            ],
             secondsPerRound: 90,
             cardDecks: []
         };
     }
 
     validate(ev: any) {
-        console.log(ev);
+        if (!this.$refs.form.validate()) {
+            return;
+        }
+        
         console.log(this.nickname);
+        console.log(this.maxPlayers);
         console.log(this.cardDecks);
+
+
+        // TODO: router
+        // this.$router.push("/about");
     }
 }
 </script>
