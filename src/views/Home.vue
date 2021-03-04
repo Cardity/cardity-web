@@ -13,11 +13,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Header from '@/components/Header.vue';
-import CreateGame from '@/components/CreateGame.vue';
-import Footer from '@/components/Footer.vue';
-import GameInstruction from '@/components/GameInstruction.vue';
-import JoinGame from '@/components/JoinGame.vue';
+import Header from './../components/Header.vue';
+import CreateGame from './..//components/CreateGame.vue';
+import Footer from './..//components/Footer.vue';
+import GameInstruction from './..//components/GameInstruction.vue';
+import JoinGame from './..//components/JoinGame.vue';
 
 @Component({
     components: {

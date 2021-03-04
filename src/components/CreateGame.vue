@@ -125,7 +125,7 @@ export default class CreateGame extends Vue {
         };
     }
 
-    validate(ev: any) {
+    validate(ev: Event) {
         if (!this.$refs.form.validate()) {
             return;
         }
