@@ -1,51 +1,52 @@
 <template>
-    <div class="home">
-        <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field
-                v-model="name"
-                :counter="10"
-                :rules="nameRules"
-                label="Name"
-                required
-            ></v-text-field>
-
-            <v-btn
-                :disabled="!valid"
-                depressed
-                @click="validate"
-            >
-                Submit
-            </v-btn>
-        </v-form>
-    </div>
+    <v-container class="home">
+        <Header />
+        <v-row>
+            <JoinGame />
+            <CreateGame />
+        </v-row>
+        <GameInstruction />
+        <Footer />
+    </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
+import Header from '@/components/Header.vue';
+import CreateGame from '@/components/CreateGame.vue';
+import Footer from '@/components/Footer.vue';
+import GameInstruction from '@/components/GameInstruction.vue';
+import JoinGame from '@/components/JoinGame.vue';
 
-@Component({})
-export default class Home extends Vue {
-    $refs!: {
-        form: HTMLFormElement
+@Component({
+    components: {
+        Header,
+        JoinGame,
+        CreateGame,
+        GameInstruction,
+        Footer
     }
+})
+export default class Home extends Vue {}
+</script>
 
-    data() {
-        return {
-            valid: true,
-            name: '',
-            nameRules: [
-                (value: string) => !!value || "Test",
-                (value: string) => (value && value.length > 10) || "Name muss größer als 10 Zeichen sein"
-            ]
-        };
-    }
+<style lang="scss">
+@import '@/styles/global';
 
-    validate() {
-        if (!this.$refs.form.validate()) {
-            return;
+.home {
+    margin: 0 auto;
+    .contentBox {
+        padding: 10px;
+        border: 1px solid;
+        @include theme('background-color', $contentBackground);
+        @include theme('border-color', $contentBorder);
+        @include theme('color', $contentColor);
+
+        h2.boxTitle {
+            @include theme('color', $boxTitleColor);
+            margin: 0;
+            margin-bottom: 10px;
         }
-
-        console.log(this.$refs.form);
     }
 }
-</script>
+</style>

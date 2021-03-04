@@ -1,0 +1,44 @@
+$darkTheme: "darkTheme";
+$lightTheme: "lightTheme";
+
+$backgroundColor: "backgroundColor";
+$contentBackground: "contentBackground";
+$contentBorder: "contentBorder";
+$contentColor: "contentColor";
+$boxTitleColor: "boxTitleColor";
+
+$themes: (
+    $lightTheme: (
+        $backgroundColor: #FAFAFA,
+        $contentBackground: #FFFFFF,
+        $contentBorder: #EDF1F6,
+        $contentColor: #7E8286,
+        $boxTitleColor: #303E4E
+    ),
+    $darkTheme: (
+        $backgroundColor: #FAFAFA,
+        $contentBackground: #FFFFFF,
+        $contentBorder: #EDF1F6,
+        $contentColor: #7E8286,
+        $boxTitleColor: #303E4E
+    )
+);
+
+@mixin themeProperty($theme, $property, $color, $additionalPropertiesPositionIsFront, $additionalProperties) {
+    @if $additionalPropertiesPositionIsFront {
+        #{$property}: unquote($additionalProperties + ' ' + map-get($theme, $color));
+    } @else {
+        #{$property}: unquote(map-get($theme, $color) + ' ' + $additionalProperties);
+    }
+}
+
+@mixin theme($property, $color, $additionalPropertiesPositionIsFront: false, $additionalProperties: '') {
+    $light: map-get($themes, $lightTheme);
+    $dark: map-get($themes, $darkTheme);
+
+    @include themeProperty($light, $property, $color, $additionalPropertiesPositionIsFront, $additionalProperties);
+
+    @media (prefers-color-scheme: dark) {
+        @include themeProperty($dark, $property, $color, $additionalPropertiesPositionIsFront, $additionalProperties);
+    }
+}
