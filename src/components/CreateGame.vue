@@ -107,6 +107,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import VueRouter from "vue-router";
 import CAH from "../services/cah";
+import Game from "../services/game/game";
 
 @Component({})
 export default class CreateGame extends Vue {
@@ -158,6 +159,7 @@ export default class CreateGame extends Vue {
 
         this.overlay = true;
         let socket = CAH.getClient();
+        socket.createGameCallback = this.gameCreated.bind(this);
 
         let data = {
             nickname: this.nickname,
@@ -171,6 +173,48 @@ export default class CreateGame extends Vue {
 
         // TODO: router
         // this.$router.push("/about");
+    }
+
+    gameCreated(data: { [key: string]: any }) {
+        let game: Game = CAH.getGame();
+        for (let key in data) {
+            switch (key) {
+                case "cardDecks": {
+                    game.cardDecks = data[key];
+                    break;
+                }
+                case "gameID": {
+                    game.gameID = data[key];
+                    break;
+                }
+                case "hostKey": {
+                    game.hostKey = data[key];
+                    break;
+                }
+                case "houseRules": {
+                    game.houseRules = data[key];
+                    break;
+                }
+                case "maxPlayers": {
+                    game.maxPlayers = data[key];
+                    break;
+                }
+                case "password": {
+                    game.password = data[key];
+                    break;
+                }
+                case "players": {
+                    game.players = data[key];
+                    break;
+                }
+                case "secondsPerRound": {
+                    game.secondsPerRound = data[key];
+                    break;
+                }
+            }
+        }
+
+        this.$router.push("/waiting");
     }
 }
 </script>

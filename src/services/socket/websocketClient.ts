@@ -1,7 +1,12 @@
+import CAH from "../cah";
+import SocketCallback from "../callback/socketCallback";
+
 export default class WebsocketClient {
     protected socket: WebSocket;
 
     protected lastHeartbeat: number = 0;
+
+    public createGameCallback: SocketCallback | null = null;
 
     constructor() {
         // TODO: Adresse in Config auslagern
@@ -30,6 +35,7 @@ export default class WebsocketClient {
 
     protected onopen(event: Event) {
         console.log("socket opened");
+
         this.send(null, null, 1);
         setTimeout(this.checkHeartbeat.bind(this), 50000);
     }
@@ -92,7 +98,17 @@ export default class WebsocketClient {
     }
 
     protected handleResponse(type: string, data: { [key: string]: any }) {
-        console.log(type);
-        console.log(data);
+        switch (type) {
+            case "CREATE_GAME": {
+                if (this.createGameCallback != null) {
+                    this.createGameCallback(data);
+                }
+                break;
+            }
+            case "CHANGE_NICKNAME": {
+                CAH.getPlayer().name = data["name"];
+                break;
+            }
+        }
     }
 }

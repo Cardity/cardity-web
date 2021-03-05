@@ -42,19 +42,6 @@ export default class Home extends Vue {
 
 .home {
     margin: 0 auto;
-    .contentBox {
-        padding: 10px;
-        border: 1px solid;
-        @include theme('background-color', $contentBackground);
-        @include theme('border-color', $contentBorder);
-        @include theme('color', $contentColor);
-
-        h2.boxTitle {
-            @include theme('color', $boxTitleColor);
-            margin: 0;
-            margin-bottom: 20px;
-        }
-    }
 
     .spacer {
         flex-grow: 0 !important;

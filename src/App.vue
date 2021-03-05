@@ -9,7 +9,7 @@
 
 body {
     @include theme('background-color', $backgroundColor);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
     font-size: 14px;
 }
 </style>
