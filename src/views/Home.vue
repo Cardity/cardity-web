@@ -13,11 +13,13 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import CAH from "./../services/cah";
+
 import Header from './../components/Header.vue';
-import CreateGame from './..//components/CreateGame.vue';
-import Footer from './..//components/Footer.vue';
-import GameInstruction from './..//components/GameInstruction.vue';
-import JoinGame from './..//components/JoinGame.vue';
+import CreateGame from './../components/CreateGame.vue';
+import Footer from './../components/Footer.vue';
+import GameInstruction from './../components/GameInstruction.vue';
+import JoinGame from './../components/JoinGame.vue';
 
 @Component({
     components: {
@@ -28,7 +30,11 @@ import JoinGame from './..//components/JoinGame.vue';
         Footer
     }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+    created() {
+        CAH.getClient();
+    }
+}
 </script>
 
 <style lang="scss">

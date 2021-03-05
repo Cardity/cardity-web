@@ -41,8 +41,7 @@
                 outlined>
             </v-text-field>
 
-            <v-subheader
-                class="subHeaderDl">
+            <v-subheader>
                 Kartendecks
             </v-subheader>
             <v-checkbox
@@ -70,32 +69,54 @@
                 hide-details>
             </v-checkbox>
 
+            <v-subheader>
+                Hausregeln
+            </v-subheader>
+            <v-radio-group v-model="houseRules">
+                <v-radio
+                    label="Standard"
+                    :value="1">
+                </v-radio>
+                <v-radio
+                    label="Anderes"
+                    :value="2">
+                </v-radio>
+            </v-radio-group>
+
             <div class="submitArea">
                 <v-btn
                     :disabled="!valid"
                     color="success"
                     depressed
-                    @click="validate"
+                    @click="submit"
                 >
                     Raum erstellen
                 </v-btn>
             </div>
         </v-form>
+        <v-overlay :value="overlay">
+            <v-progress-circular
+                indeterminate
+                size="64"
+            ></v-progress-circular>
+        </v-overlay>
     </v-col>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import VueRouter from "vue-router";
+import CAH from "../services/cah";
 
 @Component({})
 export default class CreateGame extends Vue {
+    overlay: boolean = false;
     nickname: string = "";
     password: string = "";
     maxPlayers: number = 0;
     secondsPerRound: number = 0;
-    cardDecks: string[] = [];
-
+    cardDecks: string[] = ["1"];
+    houseRules: number = 1;
     $refs!: {
         form: HTMLFormElement
     }
@@ -103,6 +124,7 @@ export default class CreateGame extends Vue {
     data() {
         return {
             valid: true,
+            overlay: false,
             show1: false,
             nickname: "",
             nicknameRules: [
@@ -121,19 +143,31 @@ export default class CreateGame extends Vue {
                 (value: number) => (value <= 10) || "Es können maximal 10 Spieler teilnehmen."
             ],
             secondsPerRound: 90,
-            cardDecks: []
+            cardDecks: ["1"],
+            // TODO: validate
+            houseRules: 1
         };
     }
 
-    validate(ev: Event) {
+    submit(ev: Event) {
         if (!this.$refs.form.validate()) {
             return;
         }
         
-        console.log(this.nickname);
-        console.log(this.maxPlayers);
-        console.log(this.cardDecks);
+        console.log(this.houseRules);
 
+        this.overlay = true;
+        let socket = CAH.getClient();
+
+        let data = {
+            nickname: this.nickname,
+            password: this.password,
+            maxPlayers: this.maxPlayers,
+            secondsPerRound: this.secondsPerRound,
+            cardDecks: this.cardDecks,
+            houseRules: this.houseRules
+        };
+        socket.send("CREATE_GAME", data);
 
         // TODO: router
         // this.$router.push("/about");
@@ -142,10 +176,6 @@ export default class CreateGame extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.subHeaderDl {
-    height: 0px;
-}
-
 .createGame {
     .submitArea {
         margin-top: 20px;
