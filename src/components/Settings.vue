@@ -85,7 +85,7 @@
                         <v-btn
                             color="blue"
                             depressed
-                            @click="submit"
+                            @click="startGame"
                             class="ml-2"
                         >
                             Spiel starten
@@ -124,6 +124,12 @@
                     Standard
                 </div>
             </template>
+            <v-overlay :value="overlay">
+                <v-progress-circular
+                    indeterminate
+                    size="64"
+                ></v-progress-circular>
+            </v-overlay>
         </v-col>
     </v-row>
 </template>
@@ -135,8 +141,9 @@ import Game from "../services/game/game";
 
 @Component({})
 export default class Settings extends Vue {
-    protected isHost: boolean = false;
-    protected game: Game;
+    overlay: boolean = false;
+    isHost: boolean = false;
+    game: Game;
 
     maxPlayers: number = 0;
     secondsPerRound: number = 0;
@@ -155,6 +162,7 @@ export default class Settings extends Vue {
     data() {
         return {
             valid: false,
+            overlay: false,
             game: CAH.getGame(),
             isHost: false,
             maxPlayers: CAH.getGame().maxPlayers,
@@ -192,6 +200,16 @@ export default class Settings extends Vue {
             houseRules: this.houseRules
         };
         socket.send("GAME_UPDATE", data);
+    }
+
+    startGame(ev: Event) {
+        if (Object.keys(CAH.getGame().players).length < 3) {
+            alert("Um das Spiel zu starten, müssen mindestens 3 Spieler im Warteraum sein.");
+            return;
+        }
+
+        this.overlay = true;
+        CAH.getClient().send("GAME_START", null);
     }
 }
 </script>
