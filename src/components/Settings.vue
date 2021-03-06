@@ -136,6 +136,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import VueRouter from "vue-router";
 import CAH from "../services/cah";
 import Game from "../services/game/game";
 
@@ -203,13 +204,16 @@ export default class Settings extends Vue {
     }
 
     startGame(ev: Event) {
-        if (Object.keys(CAH.getGame().players).length < 3) {
-            alert("Um das Spiel zu starten, müssen mindestens 3 Spieler im Warteraum sein.");
-            return;
-        }
+        // if (Object.keys(CAH.getGame().players).length < 3) {
+        //     alert("Um das Spiel zu starten, müssen mindestens 3 Spieler im Warteraum sein.");
+        //     return;
+        // }
+
 
         this.overlay = true;
         CAH.getClient().send("GAME_START", null);
+
+        this.$router.push("/game");
     }
 }
 </script>

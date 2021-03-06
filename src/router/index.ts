@@ -19,6 +19,11 @@ const routes: Array<RouteConfig> = [
         path: '/connection-closed',
         name: 'Verbindung geschlosse',
         component: () => import('../views/ConnectionClosed.vue')
+    },
+    {
+        path: '/game',
+        name: 'Spiel',
+        component: () => import('../views/Game.vue')
     }
 ]
 
