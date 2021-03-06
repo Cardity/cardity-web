@@ -1,5 +1,6 @@
 import CAH from "../cah";
 import SocketCallback from "../callback/socketCallback";
+import Game from "../game/game";
 
 export default class WebsocketClient {
     protected socket: WebSocket;
@@ -8,6 +9,7 @@ export default class WebsocketClient {
 
     public createGameCallback: SocketCallback | null = null;
     public joinGameCallback: SocketCallback | null = null;
+    public changeGameListener: SocketCallback[] = [];
 
     constructor() {
         // TODO: Adresse in Config auslagern
@@ -76,21 +78,16 @@ export default class WebsocketClient {
         if (this.socket.readyState != WebSocket.OPEN) {
             return;
         }
-        console.log("send heartbeat1 " + Math.floor(Date.now() / 1000));
         this.send(null, null, 3);
     }
 
     protected handleHeartbeatAck() {
         this.lastHeartbeat = Math.floor(Date.now() / 1000);
-        console.log("got heartbeat ack " + this.lastHeartbeat);
         setTimeout(this.sendHeartbeat.bind(this), 40000);
     }
 
     protected checkHeartbeat() {
         if (this.lastHeartbeat + 50 < Math.floor(Date.now() / 1000)) {
-            console.log("close because of heartbeat");
-            console.log(this.lastHeartbeat);
-            console.log(Math.floor(Date.now() / 1000));
             this.socket.close();
             return;
         }
@@ -139,6 +136,42 @@ export default class WebsocketClient {
     }
 
     protected changeGame(data: { [key: string]: any }) {
-        // TODO: implement
+        let game: Game = CAH.getGame();
+        for (let key in data) {
+            switch (key) {
+                case "cardDecks": {
+                    game.cardDecks = data[key];
+                    break;
+                }
+                case "gameID": {
+                    game.gameID = data[key];
+                    break;
+                }
+                case "hostKey": {
+                    game.hostKey = data[key];
+                    break;
+                }
+                case "houseRules": {
+                    game.houseRules = data[key];
+                    break;
+                }
+                case "maxPlayers": {
+                    game.maxPlayers = data[key];
+                    break;
+                }
+                case "players": {
+                    game.players = data[key];
+                    break;
+                }
+                case "secondsPerRound": {
+                    game.secondsPerRound = data[key];
+                    break;
+                }
+            }
+        }
+
+        for (let key in this.changeGameListener) {
+            this.changeGameListener[key](data);
+        }
     }
 }

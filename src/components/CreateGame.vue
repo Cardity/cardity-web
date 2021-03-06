@@ -197,10 +197,6 @@ export default class CreateGame extends Vue {
                     game.maxPlayers = data[key];
                     break;
                 }
-                case "password": {
-                    game.password = data[key];
-                    break;
-                }
                 case "players": {
                     game.players = data[key];
                     break;

@@ -13,7 +13,7 @@
 
             <v-text-field
                 v-model="gameID"
-                label="Raumcode"
+                label="Raum-Code"
                 :rules="gameIDRules"
                 :error-messages="gameIDError"
                 outlined
@@ -39,7 +39,7 @@
                     depressed
                     @click="submit"
                 >
-                    Raum erstellen
+                    Raum betreten
                 </v-btn>
             </div>
         </v-form>
@@ -55,6 +55,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import VueRouter from "vue-router";
+import Game from "../services/game/game";
 import CAH from "../services/cah";
 
 @Component({})
@@ -112,7 +113,51 @@ export default class JoinGame extends Vue {
     }
 
     joinGame(data: { [key: string]: any }) {
-        console.log(data);
+        this.overlay = false;
+
+        if (data["errorField"] != null) {
+            if (data["errorField"] == "gameID") {
+                this.gameIDError = data["errorMessage"];
+            } else if (data["errorField"] == "password") {
+                this.passwordError = data["errorMessage"];
+            }
+        }
+
+        let game: Game = CAH.getGame();
+        for (let key in data) {
+            switch (key) {
+                case "cardDecks": {
+                    game.cardDecks = data[key];
+                    break;
+                }
+                case "gameID": {
+                    game.gameID = data[key];
+                    break;
+                }
+                case "hostKey": {
+                    game.hostKey = data[key];
+                    break;
+                }
+                case "houseRules": {
+                    game.houseRules = data[key];
+                    break;
+                }
+                case "maxPlayers": {
+                    game.maxPlayers = data[key];
+                    break;
+                }
+                case "players": {
+                    game.players = data[key];
+                    break;
+                }
+                case "secondsPerRound": {
+                    game.secondsPerRound = data[key];
+                    break;
+                }
+            }
+        }
+
+        this.$router.push("/waiting");
     }
 }
 </script>

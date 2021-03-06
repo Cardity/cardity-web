@@ -64,12 +64,29 @@ export default class PlayerList extends Vue {
             })
         }
 
-        console.log(CAH.getPlayer().key);
-        console.log(CAH.getGame().hostKey);
         if (CAH.getPlayer().key == CAH.getGame().hostKey) {
             this.isHost = true;
         }
-        console.log(this.isHost);
+        
+        CAH.getClient().changeGameListener.push(this.changeGame.bind(this));
+    }
+
+    protected changeGame(data: { [key: string]: any }) {
+        let players = CAH.getGame().players;
+        let items: Player[] = [];
+        for (let key in players) {
+            let isHost: boolean = false;
+            if (CAH.getGame().hostKey == key) {
+                isHost = true;
+            }
+
+            items.push({
+                key: key,
+                name: players[key],
+                isHost: isHost
+            })
+        }
+        this.items = items;
     }
 }
 </script>
