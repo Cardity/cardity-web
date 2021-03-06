@@ -71,7 +71,6 @@ export default class Chat extends Vue {
 }
 </script>
 
-
 <style lang="scss" scoped>
 .chat {
     height: 300px;

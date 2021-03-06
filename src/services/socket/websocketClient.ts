@@ -105,9 +105,24 @@ export default class WebsocketClient {
                 }
                 break;
             }
-            case "CHANGE_NICKNAME": {
-                CAH.getPlayer().name = data["name"];
+            case "CHANGE_PLAYER": {
+                this.changePlayer(data);
                 break;
+            }
+        }
+    }
+
+    protected changePlayer(data: { [key: string]: any }) {
+        for(let key in data) {
+            switch (key) {
+                case "key": {
+                    CAH.getPlayer().key = data[key];
+                    break;
+                }
+                case "name": {
+                    CAH.getPlayer().name = data[key];
+                    break;
+                }
             }
         }
     }

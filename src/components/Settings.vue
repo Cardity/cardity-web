@@ -7,21 +7,21 @@
                 Raum-Code
             </div>
             <div class="text-body-2">
-                XXXXXX
+                {{ game.gameID }}
             </div>
 
             <div class="text-subtitle-1 blue--text text--darken-4 mt-4">
                 Maximale Spieleranzahl
             </div>
             <div class="text-body-2">
-                10
+                {{ game.maxPlayers }}
             </div>
 
             <div class="text-subtitle-1 blue--text text--darken-4 mt-4">
                 Sekunden pro Runden
             </div>
             <div class="text-body-2">
-                90
+                {{ game.secondsPerRound }}
             </div>
 
             <div class="text-subtitle-1 blue--text text--darken-4 mt-4">
@@ -42,3 +42,26 @@
         </v-col>
     </v-row>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import CAH from "../services/cah";
+import Game from "../services/game/game";
+
+@Component({})
+export default class Settings extends Vue {
+    protected game: Game;
+
+    constructor() {
+        super();
+
+        this.game = CAH.getGame();
+    }
+
+    data() {
+        return {
+            game: CAH.getGame()
+        }
+    }
+}
+</script>

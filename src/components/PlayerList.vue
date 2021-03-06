@@ -14,7 +14,7 @@
                         <v-list-item-content>
                             <v-list-item-title v-text="item.name" class="text-body-1"></v-list-item-title>
                         </v-list-item-content>
-                        <v-list-item-action>
+                        <v-list-item-action v-if="isHost">
                             <v-icon>mdi-account-remove</v-icon>
                         </v-list-item-action>
                     </v-list-item>
@@ -28,6 +28,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import CAH from "../services/cah";
 
 interface Player {
     key: string;
@@ -37,16 +38,37 @@ interface Player {
 
 @Component({})
 export default class PlayerList extends Vue {
-    protected items: PlayerList[] = [];
+    protected items: Player[] = [];
+    protected isHost: boolean = false;
     
     data() {
         return {
-            items: [
-                { key: "ewt1", name: "Hanashi", isHost: true },
-                { key: "ewt2", name: "Nathalie", isHost: false },
-                { key: "ewt3", name: "Test", isHost: false },
-            ]
+            items: [],
+            isHost: false
         }
+    }
+
+    created() {
+        let players = CAH.getGame().players;
+        for (let key in players) {
+            let isHost: boolean = false;
+            if (CAH.getGame().hostKey == key) {
+                isHost = true;
+            }
+
+            this.items.push({
+                key: key,
+                name: players[key],
+                isHost: isHost
+            })
+        }
+
+        console.log(CAH.getPlayer().key);
+        console.log(CAH.getGame().hostKey);
+        if (CAH.getPlayer().key == CAH.getGame().hostKey) {
+            this.isHost = true;
+        }
+        console.log(this.isHost);
     }
 }
 </script>
