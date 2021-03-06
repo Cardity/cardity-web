@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col class="header">
-            <h1>Logo</h1>
+            <h1 class="text-h4">Logo</h1>
         </v-col>
     </v-row>
 </template>

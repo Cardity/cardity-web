@@ -1,6 +1,6 @@
 <template>
     <v-col class="createGame contentBox">
-        <h2 class="boxTitle">Spiel erstellen</h2>
+        <h2 class="text-h6 mb-4">Spiel erstellen</h2>
 
         <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
@@ -124,7 +124,7 @@ export default class CreateGame extends Vue {
 
     data() {
         return {
-            valid: true,
+            valid: false,
             overlay: false,
             show1: false,
             nickname: "",

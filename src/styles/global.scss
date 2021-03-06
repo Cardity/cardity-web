@@ -49,10 +49,4 @@ $themes: (
     @include theme('background-color', $contentBackground);
     @include theme('border-color', $contentBorder);
     @include theme('color', $contentColor);
-
-    h2.boxTitle {
-        @include theme('color', $boxTitleColor);
-        margin: 0;
-        margin-bottom: 20px;
-    }
 }
