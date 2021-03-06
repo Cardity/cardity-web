@@ -37,7 +37,7 @@
             <v-text-field
                 v-model="secondsPerRound"
                 type="number"
-                label="Sekunden pro Runden"
+                label="Sekunden pro Runde"
                 outlined>
             </v-text-field>
 
@@ -76,10 +76,6 @@
                 <v-radio
                     label="Standard"
                     :value="1">
-                </v-radio>
-                <v-radio
-                    label="Anderes"
-                    :value="2">
                 </v-radio>
             </v-radio-group>
 
@@ -168,9 +164,6 @@ export default class CreateGame extends Vue {
             houseRules: this.houseRules
         };
         socket.send("CREATE_GAME", data);
-
-        // TODO: router
-        // this.$router.push("/about");
     }
 
     gameCreated(data: { [key: string]: any }) {
