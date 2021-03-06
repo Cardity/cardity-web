@@ -3,28 +3,22 @@
         <v-col class="contentBox">
             <h2 class="text-h6">Chat</h2>
 
-            <div class="chat mb-4 mt-4">
-                <div class="d-flex mt-3">
-                    <v-avatar color="primary" size="48">
-                        <span class="white--text headline">LA</span>
-                    </v-avatar>
-                    <div class="chatMessage ml-3 pa-3">
-                        Test
+            <div class="chat mb-4 mt-4" id="ChatWrapper">
+                <template v-for="(message, index) in messages">
+                    <div class="d-flex mt-3" :key="index">
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-avatar :color="message.isHost ? 'green' : 'primary'" size="48" v-bind="attrs" v-on="on">
+                                    <span class="white--text headline">{{ message.name.substr(0, 2).toUpperCase() }}</span>
+                                </v-avatar>
+                            </template>
+                            <span>{{ message.name }}</span>
+                        </v-tooltip>
+                        <div class="chatMessage ml-3 pa-3">
+                            {{ message.message }}
+                        </div>
                     </div>
-                </div>
-                <div class="d-flex mt-3">
-                    <v-tooltip right>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-avatar color="primary" size="48" v-bind="attrs" v-on="on">
-                                <span class="white--text headline">LA</span>
-                            </v-avatar>
-                        </template>
-                        <span>Lara</span>
-                    </v-tooltip>
-                    <div class="chatMessage ml-3 pa-3">
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-                    </div>
-                </div>
+                </template>
             </div>
 
             <v-form ref="form" v-model="valid" lazy-validation>
@@ -44,28 +38,66 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import CAH from "../services/cah";
+
+interface Message {
+    isHost: boolean;
+    name: string;
+    message: string;
+}
 
 @Component({})
 export default class Chat extends Vue {
+    protected messages: Message[] = [];
     protected message: string = "";
 
     data() {
         return {
             valid: false,
+            messages: [],
             message: ""
         }
+    }
+
+    created() {
+        CAH.getClient().chatMessageCallback = this.chatMessage.bind(this);
+    }
+
+    updated() {
+        this.$nextTick(() => this.scrollToEnd());
     }
 
     sendMessage() {
         if (!this.message) {
             return;
         }
-        console.log(this.message);
+
+        CAH.getClient().send("SEND_CHAT", {
+            message: this.message
+        })
+        this.message = "";
     }
 
     messageKeydown(event: KeyboardEvent) {
         if (event.key === "Enter") {
+            event.preventDefault();
+
             this.sendMessage();
+        }
+    }
+
+    chatMessage(data: { [key: string]: any }) {
+        this.messages.push({
+            isHost: data["isHost"],
+            name: data["name"],
+            message: data["message"]
+        });
+    }
+
+    scrollToEnd() {
+        let element = document.getElementById("ChatWrapper");
+        if (element != null) {
+            element.scrollTop = element.scrollHeight;
         }
     }
 }

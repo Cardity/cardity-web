@@ -11,6 +11,7 @@ export default class WebsocketClient {
     public createGameCallback: SocketCallback | null = null;
     public joinGameCallback: SocketCallback | null = null;
     public changeGameListener: SocketCallback[] = [];
+    public chatMessageCallback: SocketCallback | null = null;
 
     constructor() {
         // TODO: Adresse in Config auslagern
@@ -117,6 +118,12 @@ export default class WebsocketClient {
             }
             case "CHANGE_GAME": {
                 this.changeGame(data);
+                break;
+            }
+            case "CHAT_MESSAGE": {
+                if (this.chatMessageCallback != null) {
+                    this.chatMessageCallback(data);
+                }
                 break;
             }
         }
