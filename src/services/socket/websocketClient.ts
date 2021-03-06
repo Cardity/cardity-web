@@ -1,3 +1,4 @@
+import router from "@/router";
 import CAH from "../cah";
 import SocketCallback from "../callback/socketCallback";
 import Game from "../game/game";
@@ -46,6 +47,7 @@ export default class WebsocketClient {
     protected onclose(event: CloseEvent) {
         // TODO: Fehlermeldung anzeigen bei close
         console.log("server closed connection");
+        router.push("/connection-closed");
     }
 
     protected onerror(event: Event) {
