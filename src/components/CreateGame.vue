@@ -154,8 +154,6 @@ export default class CreateGame extends Vue {
         if (!this.$refs.form.validate()) {
             return;
         }
-        
-        console.log(this.houseRules);
 
         this.overlay = true;
         let socket = CAH.getClient();
@@ -220,10 +218,5 @@ export default class CreateGame extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.createGame {
-    .submitArea {
-        margin-top: 20px;
-        text-align: center;
-    }
-}
+@import '@/styles/global';
 </style>

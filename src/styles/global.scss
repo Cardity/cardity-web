@@ -50,3 +50,8 @@ $themes: (
     @include theme('border-color', $contentBorder);
     @include theme('color', $contentColor);
 }
+
+.submitArea {
+    margin-top: 20px;
+    text-align: center;
+}

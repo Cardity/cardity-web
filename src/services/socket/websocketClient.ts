@@ -7,6 +7,7 @@ export default class WebsocketClient {
     protected lastHeartbeat: number = 0;
 
     public createGameCallback: SocketCallback | null = null;
+    public joinGameCallback: SocketCallback | null = null;
 
     constructor() {
         // TODO: Adresse in Config auslagern
@@ -105,8 +106,18 @@ export default class WebsocketClient {
                 }
                 break;
             }
+            case "JOIN_GAME": {
+                if (this.joinGameCallback != null) {
+                    this.joinGameCallback(data);
+                }
+                break;
+            }
             case "CHANGE_PLAYER": {
                 this.changePlayer(data);
+                break;
+            }
+            case "CHANGE_GAME": {
+                this.changeGame(data);
                 break;
             }
         }
@@ -125,5 +136,9 @@ export default class WebsocketClient {
                 }
             }
         }
+    }
+
+    protected changeGame(data: { [key: string]: any }) {
+        // TODO: implement
     }
 }

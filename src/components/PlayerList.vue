@@ -14,6 +14,7 @@
                         <v-list-item-content>
                             <v-list-item-title v-text="item.name" class="text-body-1"></v-list-item-title>
                         </v-list-item-content>
+                        <!-- TODO: nur bei Spielern anzeigen, die nicht Host sind. Host kann sich nicht kicken -->
                         <v-list-item-action v-if="isHost">
                             <v-icon>mdi-account-remove</v-icon>
                         </v-list-item-action>
