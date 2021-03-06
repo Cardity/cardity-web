@@ -36,24 +36,28 @@
                     </div>
                     <v-checkbox
                         v-model="cardDecks"
+                        :rules="cardDeckRules"
                         label="Basisdeck 1"
                         value="1"
                         hide-details>
                     </v-checkbox>
                     <v-checkbox
                         v-model="cardDecks"
+                        :rules="cardDeckRules"
                         label="Basisdeck 2"
                         value="2"
                         hide-details>
                     </v-checkbox>
                     <v-checkbox
                         v-model="cardDecks"
+                        :rules="cardDeckRules"
                         label="Erweiterungsdeck 1"
                         value="3"
                         hide-details>
                     </v-checkbox>
                     <v-checkbox
                         v-model="cardDecks"
+                        :rules="cardDeckRules"
                         label="Erweiterungsdeck 2"
                         value="4"
                         hide-details>
@@ -160,6 +164,10 @@ export default class Settings extends Vue {
             ],
             secondsPerRound: CAH.getGame().secondsPerRound,
             cardDecks: CAH.getGame().cardDecks,
+            cardDeckRules: [
+                (value: string[]) => (value.length > 0) || "Es muss mindestens ein Deck ausgewählt werden.",
+                (value: string[]) => (!(value.length == 1 && value.includes("4"))) || "Dieses Deck kann nur in Verbindung mit anderen Decks verwendet werden."
+            ],
             // TODO: validate
             houseRules: CAH.getGame().houseRules
         }
