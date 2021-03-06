@@ -14,6 +14,8 @@
 import { Component, Vue } from "vue-property-decorator";
 import Header from './../components/Header.vue';
 import Footer from './../components/Footer.vue';
+import CAH from "../services/cah";
+import WebsocketClient from "../services/socket/websocketClient";
 
 @Component({
     components: {
@@ -22,5 +24,8 @@ import Footer from './../components/Footer.vue';
     }
 })
 export default class ConnectionClosed extends Vue {
+    created() {
+        CAH.socket = new WebsocketClient();
+    }
 }
 </script>
