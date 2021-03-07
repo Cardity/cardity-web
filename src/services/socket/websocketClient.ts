@@ -13,6 +13,7 @@ export default class WebsocketClient {
     public changeGameListener: SocketCallback[] = [];
     public chatMessageCallback: SocketCallback | null = null;
     public startGameCallback: SocketCallback | null = null;
+    public cardsDrawedCallback: SocketCallback | null = null;
 
     constructor() {
         // TODO: Adresse in Config auslagern
@@ -133,6 +134,10 @@ export default class WebsocketClient {
                 }
                 break;
             }
+            case "DRAW_CARDS": {
+                this.cardsDrawed(data);
+                break;
+            }
         }
     }
 
@@ -183,11 +188,28 @@ export default class WebsocketClient {
                     game.secondsPerRound = data[key];
                     break;
                 }
+                case "isRunning": {
+                    game.isRunning = data[key];
+                    break;
+                }
+                case "activeQuestionCard": {
+                    game.questionCard = data[key];
+                    break;
+                }
             }
         }
 
         for (let key in this.changeGameListener) {
             this.changeGameListener[key](data);
+        }
+    }
+
+    protected cardsDrawed(data: { [key: string]: any }) {
+        if (data["cards"] != null) {
+            CAH.getPlayer().wordCards = data["cards"];
+        }
+        if (this.cardsDrawedCallback != null) {
+            this.cardsDrawedCallback(data);
         }
     }
 }

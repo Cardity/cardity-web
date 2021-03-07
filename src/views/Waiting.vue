@@ -39,8 +39,11 @@ export default class Waiting extends Vue {
 
     created() {
         if (!this.game.gameID) {
-            // TODO: uncomment
             this.$router.push("/");
+        }
+        if (this.game.isRunning) {
+            // TODO: richtig implementieren, wenn man im nachhinein joint
+            this.$router.push("/game");
         }
     }
 }
