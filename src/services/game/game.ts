@@ -8,4 +8,5 @@ export default class Game {
     public secondsPerRound: number = 90;
     public cardDecks: string[] = ["1"];
     public houseRules: number = 1;
+    public isRunning: boolean = false;
 }

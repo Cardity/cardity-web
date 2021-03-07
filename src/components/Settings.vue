@@ -92,6 +92,30 @@
                         </v-btn>
                     </div>
                 </v-form>
+                <v-dialog v-model="dialog" width="500">
+                    <v-card>
+                        <v-card-title class="headline grey lighten-2">
+                            Zu wenig Spieler
+                        </v-card-title>
+                        
+                        <v-card-text class="mt-4">
+                            Um das Spiel starten zu können, müssen mindestens 3 Spieler im Warteraum sein.
+                        </v-card-text>
+
+                        <v-divider></v-divider>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="primary"
+                                text
+                                @click="dialog = false"
+                            >
+                                OK
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
             </template>
             <template v-else>
                 <div class="text-subtitle-1 blue--text text--darken-4 mt-4">
@@ -143,6 +167,7 @@ import Game from "../services/game/game";
 @Component({})
 export default class Settings extends Vue {
     overlay: boolean = false;
+    dialog: boolean = false;
     isHost: boolean = false;
     game: Game;
 
@@ -162,6 +187,7 @@ export default class Settings extends Vue {
 
     data() {
         return {
+            dialog: false,
             valid: false,
             overlay: false,
             game: CAH.getGame(),
@@ -186,6 +212,8 @@ export default class Settings extends Vue {
         if (CAH.getPlayer().key == CAH.getGame().hostKey) {
             this.isHost = true;
         }
+
+        CAH.getClient().startGameCallback = this.gameStarted.bind(this);
     }
 
     submit(ev: Event) {
@@ -204,15 +232,18 @@ export default class Settings extends Vue {
     }
 
     startGame(ev: Event) {
+        // TODO: uncomment
         // if (Object.keys(CAH.getGame().players).length < 3) {
-        //     alert("Um das Spiel zu starten, müssen mindestens 3 Spieler im Warteraum sein.");
+        //     this.dialog = true;
         //     return;
         // }
 
 
         this.overlay = true;
         CAH.getClient().send("GAME_START", null);
+    }
 
+    gameStarted(data: { [key: string]: any }) {
         this.$router.push("/game");
     }
 }

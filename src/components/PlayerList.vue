@@ -12,7 +12,12 @@
                             </v-avatar>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title v-text="item.name" :class="item.key == myKey ? 'text-body-1 font-weight-bold' : 'text-body-1'"></v-list-item-title>
+                            <v-list-item-title :class="item.key == myKey ? 'text-body-1 font-weight-bold' : 'text-body-1'">
+                                {{ item.name }}
+                                <span v-if="item.isHost">
+                                    (Host)
+                                </span>
+                            </v-list-item-title>
                         </v-list-item-content>
                         <!-- TODO: nur bei Spielern anzeigen, die nicht Host sind. Host kann sich nicht kicken -->
                         <v-list-item-action v-if="isHost && !item.isHost">

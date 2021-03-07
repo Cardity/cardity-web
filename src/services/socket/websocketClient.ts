@@ -12,6 +12,7 @@ export default class WebsocketClient {
     public joinGameCallback: SocketCallback | null = null;
     public changeGameListener: SocketCallback[] = [];
     public chatMessageCallback: SocketCallback | null = null;
+    public startGameCallback: SocketCallback | null = null;
 
     constructor() {
         // TODO: Adresse in Config auslagern
@@ -123,6 +124,12 @@ export default class WebsocketClient {
             case "CHAT_MESSAGE": {
                 if (this.chatMessageCallback != null) {
                     this.chatMessageCallback(data);
+                }
+                break;
+            }
+            case "START_GAME": {
+                if (this.startGameCallback != null) {
+                    this.startGameCallback(data);
                 }
                 break;
             }
