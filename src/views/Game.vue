@@ -53,6 +53,9 @@
                                 <span v-else-if="game.phase == 3 && !player.isZcar">
                                     Bitte warte, während der Kartenzar die besten Karten auswählt.
                                 </span>
+                                <span v-else-if="game.phase == 4">
+                                    Der Spieler {{ wonText }} hat gewonnen. Bitte warte, bis die nächste Runde beginnt.
+                                </span>
                             </div>
                         </div>
                     </v-col>
@@ -66,7 +69,7 @@
                         </v-col>
                     </template>
                 </v-row>
-                <v-row v-if="game.phase == 3">
+                <v-row v-if="game.phase == 3 || game.phase == 4">
                     <template v-for="(wordCard, index) in game.selectedCards">
                         <v-col class="p-4 cardWrapper" cols="2" :key="wordCard" :data-index="index" @click="selectCardGroup">
                             <div :data-index="index" class="card" :class="{ selectedCard: selectedCardGroup == index }" v-html="wordCard"></div>
@@ -77,7 +80,7 @@
                     v-model="snackbar"
                     :timeout="timeout"
                 >
-                    {{ wonText }}
+                    Der Spieler {{ wonText }} hat diese Runde gewonnen.
                 </v-snackbar>
             </v-col>
             <v-spacer class="flex-grow-0" />
@@ -157,7 +160,7 @@ export default class Game extends Vue {
     }
 
     selectCardGroup(ev: any) {
-        if (!CAH.getPlayer().isZcar) {
+        if (!CAH.getPlayer().isZcar || this.game.phase != 3) {
             return;
         }
 
@@ -196,7 +199,7 @@ export default class Game extends Vue {
             }
         }
 
-        if (this.game.phase == 4) {
+        if (this.game.phase == 1) {
             this.selectedCards = [];
             this.selected = false;
             this.selectedCardGroup = "";
@@ -209,8 +212,9 @@ export default class Game extends Vue {
     }
 
     playerWon(data: { [key: string]: any }) {
-        this.wonText = "Der Spieler " + data.name + " hat diese Runde gewonnen.";
+        this.wonText = data.name;
         this.snackbar = true;
+        this.selectedCardGroup = data.key;
     }
 
     isSelected(index: number): boolean {
