@@ -30,16 +30,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CAH from "../services/cah";
-
-interface Player {
-    key: string;
-    name: string;
-    isHost: boolean;
-}
+import IPlayer from "../services/interfaces/iplayer";
 
 @Component({})
 export default class PlayerList extends Vue {
-    protected items: Player[] = [];
+    protected items: IPlayer[] = [];
     protected isHost: boolean = false;
     protected myKey: string = "";
     
@@ -79,18 +74,9 @@ export default class PlayerList extends Vue {
 
     protected refreshPlayers() {
         let players = CAH.getGame().players;
-        let items: Player[] = [];
+        let items: IPlayer[] = [];
         for (let key in players) {
-            let isHost: boolean = false;
-            if (CAH.getGame().hostKey == key) {
-                isHost = true;
-            }
-
-            items.push({
-                key: key,
-                name: players[key],
-                isHost: isHost
-            })
+            items.push(players[key])
         }
         this.items = items;
     }
