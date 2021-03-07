@@ -117,7 +117,7 @@ export default class Game extends Vue {
     protected selectedCardGroup: string = "";
     protected cardGroupSelected: boolean = false;
 
-    protected phase2Interval: NodeJS.Timeout | null = null;
+    protected phase2Interval: any = null;
     protected roundSeconds: number = CAH.getGame().secondsPerRound;
     protected wonText: string = "";
     protected snackbar: boolean = false;
