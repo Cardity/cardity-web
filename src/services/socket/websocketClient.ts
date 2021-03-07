@@ -219,6 +219,10 @@ export default class WebsocketClient {
                     game.selectedCards = data[key];
                     break;
                 }
+                case "questionCards": {
+                    game.questionCards = data[key];
+                    break;
+                }
             }
         }
 

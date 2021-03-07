@@ -6,7 +6,7 @@
                     <v-col class="p-4 cardWrapper" cols="2">
                         <div class="card blackDeck">
                             <div>
-                                X Karten
+                                {{ game.questionCards }} Karten
                             </div>
                             <div class="mt-4" v-if="game.phase == 2">
                                 {{ roundSeconds }} Sekunden

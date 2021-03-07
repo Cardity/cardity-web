@@ -11,6 +11,7 @@ export default class Game {
     public isRunning: boolean = false;
     public questionCard: string = "";
     public phase: number = 0;
+    public questionCards: number = 0;
     public selectedCards: { [key: string]: string } = {};
 
     public getWords(): number {
