@@ -13,7 +13,8 @@ export default class WebsocketClient {
     public changeGameListener: SocketCallback[] = [];
     public chatMessageCallback: SocketCallback | null = null;
     public startGameCallback: SocketCallback | null = null;
-    public cardsDrawedCallback: SocketCallback | null = null;
+    public playerChangedCallback: SocketCallback | null = null;
+    public playerWonCallback: SocketCallback | null = null;
 
     constructor() {
         // TODO: Adresse in Config auslagern
@@ -134,8 +135,10 @@ export default class WebsocketClient {
                 }
                 break;
             }
-            case "DRAW_CARDS": {
-                this.cardsDrawed(data);
+            case "PLAYER_WON": {
+                if (this.playerWonCallback != null) {
+                    this.playerWonCallback(data);
+                }
                 break;
             }
         }
@@ -152,7 +155,19 @@ export default class WebsocketClient {
                     CAH.getPlayer().name = data[key];
                     break;
                 }
+                case "wordCards": {
+                    CAH.getPlayer().wordCards = data[key];
+                    break;
+                }
+                case "isCardCzar": {
+                    CAH.getPlayer().isZcar = data[key];
+                    break;
+                }
             }
+        }
+
+        if (this.playerChangedCallback != null) {
+            this.playerChangedCallback(data);
         }
     }
 
@@ -192,8 +207,16 @@ export default class WebsocketClient {
                     game.isRunning = data[key];
                     break;
                 }
+                case "phase": {
+                    game.phase = data[key];
+                    break;
+                }
                 case "activeQuestionCard": {
                     game.questionCard = data[key];
+                    break;
+                }
+                case "selectedCards": {
+                    game.selectedCards = data[key];
                     break;
                 }
             }
@@ -201,15 +224,6 @@ export default class WebsocketClient {
 
         for (let key in this.changeGameListener) {
             this.changeGameListener[key](data);
-        }
-    }
-
-    protected cardsDrawed(data: { [key: string]: any }) {
-        if (data["cards"] != null) {
-            CAH.getPlayer().wordCards = data["cards"];
-        }
-        if (this.cardsDrawedCallback != null) {
-            this.cardsDrawedCallback(data);
         }
     }
 }

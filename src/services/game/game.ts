@@ -10,4 +10,10 @@ export default class Game {
     public houseRules: number = 1;
     public isRunning: boolean = false;
     public questionCard: string = "";
+    public phase: number = 0;
+    public selectedCards: { [key: string]: string } = {};
+
+    public getWords(): number {
+        return (this.questionCard.match(/\_\_\_/g) || []).length;
+    }
 }
