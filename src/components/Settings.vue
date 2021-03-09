@@ -214,6 +214,7 @@ export default class Settings extends Vue {
         }
 
         CAH.getClient().startGameCallback = this.gameStarted.bind(this);
+        CAH.getClient().changeGameListener.push(this.gameChanged.bind(this));
     }
 
     submit(ev: Event) {
@@ -241,6 +242,12 @@ export default class Settings extends Vue {
 
         this.overlay = true;
         CAH.getClient().send("GAME_START", null);
+    }
+
+    gameChanged(data: { [key: string]: any }) {
+        if (CAH.getPlayer().key == CAH.getGame().hostKey) {
+            this.isHost = true;
+        }
     }
 
     gameStarted(data: { [key: string]: any }) {
