@@ -1,10 +1,11 @@
+import { io, Socket as SocketIOSocket } from "socket.io-client";
 import router from "@/router";
 import CAH from "../cah";
 import SocketCallback from "../callback/socketCallback";
 import Game from "../game/game";
 
 export default class WebsocketClient {
-    protected socket: WebSocket;
+    protected socket: SocketIOSocket;
 
     protected lastHeartbeat: number = 0;
 
@@ -18,87 +19,41 @@ export default class WebsocketClient {
 
     constructor() {
         // TODO: Adresse in Config auslagern
-        this.socket = new WebSocket("wss://cah.testsrv.de:8448/");
-        this.socket.onopen = this.onopen.bind(this);
-        this.socket.onmessage = this.onmessage.bind(this);
-        this.socket.onclose = this.onclose.bind(this);
-        this.socket.onerror = this.onerror.bind(this);
+        this.socket = io("wss://cah.testsrv.de:8448/", {
+            transports: ["websocket"],
+            reconnection: false // TODO: uncomment
+        });
+        this.socket.on("connect", this.onopen.bind(this));
+        this.socket.on("message", this.onmessage.bind(this));
+        this.socket.on("disconnect", this.onclose.bind(this));
     }
 
-    public send(type: string | null, data: { [key: string]: any } | null, operation: number = 5) {
-        let requestData: { [key: string]: any } = {
-            "o": operation
-        }
+    public send(type: string | null, data: { [key: string]: any } | null, operation: string = "message") {
+        let requestData: { [key: string]: any } = {}
         if (type != null && type && type.length > 0) {
             requestData["t"] = type;
         }
         if (data != null) {
             requestData["d"] = data;
         }
-        if (this.socket.readyState != WebSocket.OPEN) {
-            return;
-        }
-        this.socket.send(JSON.stringify(requestData));
+        this.socket.emit(operation, requestData);
     }
 
-    protected onopen(event: Event) {
+    protected onopen(event: any) {
         console.log("socket opened");
 
-        this.send(null, null, 1);
-        setTimeout(this.checkHeartbeat.bind(this), 50000);
+        this.send(null, null, "hello");
     }
 
-    protected onclose(event: CloseEvent) {
+    protected onclose(event: any) {
         // TODO: Fehlermeldung anzeigen bei close
         console.log("server closed connection");
         router.push("/connection-closed");
     }
 
-    protected onerror(event: Event) {
-        console.log("Fehler: ");
-        console.log(event);
-    }
-
-    protected onmessage(event: any) {
-        var data = JSON.parse(event.data);
+    protected onmessage(data: any) {
         console.log(data);
-        switch (data.o) {
-            case 2:
-                this.heartbeat();
-                break;
-            case 4:
-                this.handleHeartbeatAck();
-                break;
-            case 6:
-                this.handleResponse(data.t, data.d);
-                break;
-        }
-    }
-
-    protected heartbeat() {
-        this.lastHeartbeat = Math.floor(Date.now() / 1000);
-        setTimeout(this.sendHeartbeat.bind(this), 40000);
-    }
-
-    protected sendHeartbeat() {
-        if (this.socket.readyState != WebSocket.OPEN) {
-            return;
-        }
-        this.send(null, null, 3);
-    }
-
-    protected handleHeartbeatAck() {
-        this.lastHeartbeat = Math.floor(Date.now() / 1000);
-        setTimeout(this.sendHeartbeat.bind(this), 40000);
-    }
-
-    protected checkHeartbeat() {
-        if (this.lastHeartbeat + 50 < Math.floor(Date.now() / 1000)) {
-            this.socket.close();
-            return;
-        }
-
-        setTimeout(this.checkHeartbeat.bind(this), 50000);
+        this.handleResponse(data.t, data.d);
     }
 
     protected handleResponse(type: string, data: { [key: string]: any }) {
