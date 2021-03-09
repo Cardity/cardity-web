@@ -123,41 +123,42 @@ export default class JoinGame extends Vue {
             } else if (data["errorField"] == "password") {
                 this.passwordError = data["errorMessage"];
             }
+            return;
         }
 
-        // let game: Game = CAH.getGame();
-        // for (let key in data) {
-        //     switch (key) {
-        //         case "cardDecks": {
-        //             game.cardDecks = data[key];
-        //             break;
-        //         }
-        //         case "gameID": {
-        //             game.gameID = data[key];
-        //             break;
-        //         }
-        //         case "hostKey": {
-        //             game.hostKey = data[key];
-        //             break;
-        //         }
-        //         case "houseRules": {
-        //             game.houseRules = data[key];
-        //             break;
-        //         }
-        //         case "maxPlayers": {
-        //             game.maxPlayers = data[key];
-        //             break;
-        //         }
-        //         case "players": {
-        //             game.players = data[key];
-        //             break;
-        //         }
-        //         case "secondsPerRound": {
-        //             game.secondsPerRound = data[key];
-        //             break;
-        //         }
-        //     }
-        // }
+        let game: Game = CAH.getGame();
+        for (let key in data) {
+            switch (key) {
+                case "cardDecks": {
+                    game.cardDecks = data[key];
+                    break;
+                }
+                case "gameID": {
+                    game.gameID = data[key];
+                    break;
+                }
+                case "hostKey": {
+                    game.hostKey = data[key];
+                    break;
+                }
+                case "houseRules": {
+                    game.houseRules = data[key];
+                    break;
+                }
+                case "maxPlayers": {
+                    game.maxPlayers = data[key];
+                    break;
+                }
+                case "players": {
+                    game.players = data[key];
+                    break;
+                }
+                case "secondsPerRound": {
+                    game.secondsPerRound = data[key];
+                    break;
+                }
+            }
+        }
 
         this.$router.push("/waiting");
     }

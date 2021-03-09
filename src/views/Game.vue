@@ -96,7 +96,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-
+import VueRouter from "vue-router";
 import Header from './../components/Header.vue';
 import PlayerList from './../components/PlayerList.vue';
 import Chat from './../components/Chat.vue';
