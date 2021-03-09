@@ -72,6 +72,15 @@
                 value="4"
                 hide-details>
             </v-checkbox>
+            <!-- <v-checkbox
+                v-model="cardDecks"
+                label="Eigenes Deck"
+                value="own"
+                hide-details
+                @change="showOwnDeck = !showOwnDeck">
+            </v-checkbox> -->
+
+            <!-- <v-file-input v-if="showOwnDeck" accept="application/json" label="Eigenes Deck" v-model="ownFile"></v-file-input> -->
 
             <v-subheader>
                 Hausregeln
@@ -118,6 +127,7 @@ export default class CreateGame extends Vue {
     secondsPerRound: number = 0;
     cardDecks: string[] = ["1"];
     houseRules: number = 1;
+    ownFile: any;
     $refs!: {
         form: HTMLFormElement
     }
@@ -127,6 +137,7 @@ export default class CreateGame extends Vue {
             valid: false,
             overlay: false,
             show1: false,
+            showOwnDeck: false,
             nickname: "",
             nicknameRules: [
                 (value: string) => !!value || "Der Nickname darf nicht leer sein.",
@@ -150,7 +161,8 @@ export default class CreateGame extends Vue {
                 (value: string[]) => (!(value.length == 1 && value.includes("4"))) || "Dieses Deck kann nur in Verbindung mit anderen Decks verwendet werden."
             ],
             // TODO: validate
-            houseRules: 1
+            houseRules: 1,
+            ownFile: null
         };
     }
 
@@ -158,6 +170,17 @@ export default class CreateGame extends Vue {
         if (!this.$refs.form.validate()) {
             return;
         }
+
+        // var reader = new FileReader();
+        // reader.onload = function(ev: ProgressEvent<FileReader>) {
+        //     console.log(ev.target?.result);
+        // }
+        // reader.readAsText(this.ownFile);
+
+        // console.log("test1");
+        // console.log(this.ownFile);
+        // console.log("test2");
+        // return;
 
         this.overlay = true;
         let socket = CAH.getClient();
