@@ -34,6 +34,11 @@ const routes: Array<RouteConfig> = [
         path: '/privacy',
         name: 'Datenschutzerklärung',
         component: () => import('../views/Privacy.vue')
+    },
+    {
+        path: '/deck-generator',
+        name: 'Deck generieren',
+        component: () => import('../views/DeckGenerator.vue')
     }
 ]
 
