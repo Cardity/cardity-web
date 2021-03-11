@@ -3,6 +3,9 @@
         <v-col class="footer">
             <ul>
                 <li>
+                    <router-link to="/">Zum Spiel</router-link>
+                </li>
+                <li>
                     <router-link to="/privacy">Datenschutzerklärung</router-link>
                 </li>
                 <li>

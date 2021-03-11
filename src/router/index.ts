@@ -29,6 +29,11 @@ const routes: Array<RouteConfig> = [
         path: '/imprint',
         name: 'Impressum',
         component: () => import('../views/Imprint.vue')
+    },
+    {
+        path: '/privacy',
+        name: 'Datenschutzerklärung',
+        component: () => import('../views/Privacy.vue')
     }
 ]
 

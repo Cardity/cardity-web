@@ -31,6 +31,12 @@ import JoinGame from './../components/JoinGame.vue';
     }
 })
 export default class Home extends Vue {
+    data() {
+        return {
+            snackbar: true
+        }
+    }
+
     created() {
         CAH.getClient();
     }
