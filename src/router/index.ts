@@ -24,6 +24,11 @@ const routes: Array<RouteConfig> = [
         path: '/game',
         name: 'Spiel',
         component: () => import('../views/Game.vue')
+    },
+    {
+        path: '/imprint',
+        name: 'Impressum',
+        component: () => import('../views/Imprint.vue')
     }
 ]
 
