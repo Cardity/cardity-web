@@ -136,6 +136,7 @@
                     Kartendecks
                 </div>
                 <div class="text-body-2">
+                    <!-- TODO: hier alle Decks anzeigen -->
                     <ul>
                         <li>Basisdeck</li>
                     </ul>
@@ -145,6 +146,7 @@
                     Hausregeln
                 </div>
                 <div class="text-body-2">
+                    <!-- TODO: hier alle Regeln anzeigen -->
                     Standard
                 </div>
             </template>
