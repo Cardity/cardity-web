@@ -56,6 +56,9 @@
                                 <span v-else-if="game.phase == 4">
                                     Der Spieler {{ wonText }} hat gewonnen. Bitte warte, bis die nächste Runde beginnt.
                                 </span>
+                                <span v-else-if="game.phase == 5">
+                                    Das Spiel ist zu Ende. Du kannst nun zurück in den <router-link to="/waiting">Warteraum</router-link> gehen.
+                                </span>
                             </div>
                         </div>
                     </v-col>
@@ -75,6 +78,34 @@
                             <div :data-index="index" class="card" :class="{ selectedCard: selectedCardGroup == index }" v-html="wordCard"></div>
                         </v-col>
                     </template>
+                </v-row>
+                <v-row v-if="game.phase == 5">
+                    <v-list flat>
+                        <v-list-item-group>
+                            <template v-for="(item, index) in game.endWinner">
+                                <v-list-item :key="item.name">
+                                    <v-list-item-icon class="mr-2">
+                                        <v-avatar :color="item.isHost ? 'green' : 'primary'" size="48">
+                                            <span class="white--text headline">{{ item.name.substr(0, 2).toUpperCase() }}</span>
+                                        </v-avatar>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>
+                                            <span>{{ item.name }}</span>
+                                            <span v-if="item.isHost">
+                                                (Host)
+                                            </span>
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle>
+                                            <span>{{ item.place }} Platz, {{ item.points }} Punkte</span>
+                                        </v-list-item-subtitle>
+                                    </v-list-item-content>
+                                </v-list-item>
+
+                                <v-divider v-if="index < game.endWinner.length - 1" :key="item.place"></v-divider>
+                            </template>
+                        </v-list-item-group>
+                    </v-list>
                 </v-row>
                 <v-snackbar
                     v-model="snackbar"
@@ -102,6 +133,7 @@ import PlayerList from './../components/PlayerList.vue';
 import Chat from './../components/Chat.vue';
 import CAH from "../services/cah";
 import Player from "../services/game/player";
+import IEndWinner from "../services/interfaces/iendwinner";
 
 @Component({
     components: {
@@ -116,6 +148,7 @@ export default class Game extends Vue {
     protected selected: boolean = false;
     protected selectedCardGroup: string = "";
     protected cardGroupSelected: boolean = false;
+    protected endWinner: IEndWinner[] = [];
 
     protected phase2Interval: any = null;
     protected roundSeconds: number = CAH.getGame().secondsPerRound;

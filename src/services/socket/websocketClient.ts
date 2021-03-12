@@ -178,6 +178,10 @@ export default class WebsocketClient {
                     game.questionCards = data[key];
                     break;
                 }
+                case "endWinner": {
+                    game.endWinner = data[key];
+                    break;
+                }
             }
         }
 
