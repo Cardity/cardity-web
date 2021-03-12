@@ -16,6 +16,7 @@
                 label="Raum-Code"
                 :rules="gameIDRules"
                 :error-messages="gameIDError"
+                @keydown="errorKeydown"
                 outlined
                 clearable>
             </v-text-field>
@@ -27,6 +28,7 @@
                 label="Raum-Passwort"
                 :rules="passwordRules"
                 :error-messages="passwordError"
+                @keydown="errorKeydown"
                 outlined
                 clearable
                 @click:append="show1 = !show1">
@@ -93,6 +95,17 @@ export default class JoinGame extends Vue {
             gameIDError: "",
             passwordError: ""
         };
+    }
+
+    errorKeydown(event: KeyboardEvent) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+
+            this.submit(event);
+        } else {
+            this.gameIDError = "";
+            this.passwordError = "";
+        }
     }
 
     submit(ev: Event) {
