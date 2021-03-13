@@ -9,6 +9,7 @@
                                 {{ game.questionCards }} Karten
                             </div>
                             <div class="mt-4" v-if="game.phase == 2">
+                                <!-- TODO: Timer ist falsch -->
                                 {{ roundSeconds }} Sekunden
                             </div>
                         </div>
@@ -128,7 +129,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import VueRouter from "vue-router";
-import Header from './../components/Header.vue';
 import PlayerList from './../components/PlayerList.vue';
 import Chat from './../components/Chat.vue';
 import CAH from "../services/cah";
@@ -261,6 +261,10 @@ export default class Game extends Vue {
 
     getQuestionCard() {
         let questionCard = this.game.questionCard;
+        if (this.game.phase == 4) {
+            return questionCard;
+        }
+
         if (this.selectedCards.length > this.game.getWords()) {
             return questionCard;
         }
