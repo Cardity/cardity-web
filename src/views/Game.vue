@@ -97,7 +97,7 @@
                                             </span>
                                         </v-list-item-title>
                                         <v-list-item-subtitle>
-                                            <span>{{ item.place }} Platz, {{ item.points }} Punkte</span>
+                                            <span>{{ item.place }}. Platz, {{ item.points }} Punkte</span>
                                         </v-list-item-subtitle>
                                     </v-list-item-content>
                                 </v-list-item>
