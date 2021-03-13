@@ -9,7 +9,6 @@
                                 {{ game.questionCards }} Karten
                             </div>
                             <div class="mt-4" v-if="game.phase == 2">
-                                <!-- TODO: Timer ist falsch -->
                                 {{ roundSeconds }} Sekunden
                             </div>
                         </div>
@@ -150,7 +149,6 @@ export default class Game extends Vue {
     protected cardGroupSelected: boolean = false;
     protected endWinner: IEndWinner[] = [];
 
-    protected phase2Interval: any = null;
     protected roundSeconds: number = CAH.getGame().secondsPerRound;
     protected wonText: string = "";
     protected snackbar: boolean = false;
@@ -225,11 +223,7 @@ export default class Game extends Vue {
         this.game = CAH.getGame();
         if (this.game.phase == 2) {
             this.roundSeconds = CAH.getGame().secondsPerRound
-            this.phase2Interval = setInterval(this.phase2Timer.bind(this), 1000);
-        } else {
-            if (this.phase2Interval != null) {
-                clearInterval(this.phase2Interval);
-            }
+            setTimeout(this.phase2Timer.bind(this), 1000);
         }
 
         if (this.game.phase == 1) {
@@ -279,6 +273,10 @@ export default class Game extends Vue {
         if (this.roundSeconds > 0) {
             this.roundSeconds--;
         }
+        if (this.game.phase != 2) {
+            return;
+        }
+        setTimeout(this.phase2Timer.bind(this), 1000);
     }
 }
 </script>
