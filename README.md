@@ -1,4 +1,4 @@
-# cah_web
+# Cardity Web
 
 ## Project setup
 ```
